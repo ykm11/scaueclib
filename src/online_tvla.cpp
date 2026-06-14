@@ -13,10 +13,10 @@ pybind11::array_t<double> OnlineTVLA::get_tvalue() const {
     double* x = static_cast<double*>(buf.ptr);
 
     const double* ptr_mean_g0 = mean_g0_.data();
-    const double* ptr_mean_g1 = mean_g0_.data();
+    const double* ptr_mean_g1 = mean_g1_.data();
 
     const double* ptr_mean2_g0 = mean2_g0_.data();
-    const double* ptr_mean2_g1 = mean2_g0_.data();
+    const double* ptr_mean2_g1 = mean2_g1_.data();
 
     const double inv_n_g0 = 1.0 / num_g0_;
     const double inv_n_g1 = 1.0 / num_g1_;
@@ -26,7 +26,7 @@ pybind11::array_t<double> OnlineTVLA::get_tvalue() const {
         double var_g1 = ptr_mean2_g1[i] * inv_n_g1;
 
         // t = (m0 - m1) / sqrt ( var_g0/num_g0 + var_g1/num_g1 )
-        x[i] = (ptr_mean_g0 - ptr_mean_g1) \
+        x[i] = (ptr_mean_g0[i] - ptr_mean_g1[i]) \
                / std::sqrt( var_g0*inv_n_g0 + var_g1*inv_n_g1 );
     }
 
@@ -49,13 +49,13 @@ void OnlineTVLA::update(pybind11::array_t<float,
       num_g0_++;
       inv_n = 1.0 / num_g0_;
       ptr_mean = mean_g0_.data();
-      ptr_mean2 = mean_g0_.data();
+      ptr_mean2 = mean2_g0_.data();
 
     } else {
       num_g1_++;
       inv_n = 1.0 / num_g1_;
       ptr_mean = mean_g1_.data();
-      ptr_mean2 = mean_g1_.data();
+      ptr_mean2 = mean2_g1_.data();
 
     }
 
@@ -69,7 +69,7 @@ void OnlineTVLA::update(pybind11::array_t<float,
     // divide N to obtain the actual variace
 }
 
-void bind_online_TVLA(pybind11::module_& m) {
+void bind_online_tvla(pybind11::module_& m) {
     pybind11::class_<OnlineTVLA>(m, "OnlineTVLA")
         .def(pybind11::init<size_t>())
         .def("update", &OnlineTVLA::update)
