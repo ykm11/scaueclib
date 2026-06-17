@@ -12,6 +12,7 @@ public:
             int coin);
     
     pybind11::array_t<double> get_tvalue() const;
+    void clear();
 
 private:
     size_t num_g0_;
@@ -19,10 +20,10 @@ private:
     size_t dim_;
 
     std::vector<double> mean_g0_;
-    std::vector<double> mean2_g0_;
+    std::vector<double> m2_g0_;
 
     std::vector<double> mean_g1_;
-    std::vector<double> mean2_g1_;
+    std::vector<double> m2_g1_;
 
 };
 
