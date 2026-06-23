@@ -18,6 +18,7 @@ pybind11_add_module(scaueclib
     src/module.cpp
     src/online_cpa.cpp
     src/online_tvla.cpp
+    src/online_bivariate.cpp
 )
 
 target_include_directories(scaueclib PRIVATE
@@ -32,6 +33,5 @@ target_compile_options(scaueclib PRIVATE
     -O3
     -march=native
 )
-
 
 
