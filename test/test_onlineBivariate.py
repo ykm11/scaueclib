@@ -52,5 +52,5 @@ def high_dim():
 
 
 if __name__ == "__main__":
-    #low_dim()
-    high_dim()
+    low_dim()
+    #high_dim()
