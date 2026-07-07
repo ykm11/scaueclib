@@ -98,6 +98,37 @@ void OnlineBivariate::clear() {
 }
 */
 
+
+OnlineBivariateTVLA::OnlineBivariateTVLA(size_t dim) : 
+    g0_(dim), g1_(dim)
+    {
+}
+
+
+void OnlineBivariateTVLA::update(pybind11::array_t<float, 
+        pybind11::array::c_style | pybind11::array::forcecast> array_x,
+        int coin) {
+
+    if (coin == 0) {
+        g0_.update(array_x);
+    } else if (coin == 1) {
+        g1_.update(array_x);
+    } else{
+
+    }
+
+}
+
+pybind11::array_t<double>
+OnlineBivariateTVLA::get_tvalue() const {
+    pybind11::array_t<double> out({dim_, dim_});
+
+    out = g0_.welch_t_against(g1_);
+    return out;
+}
+
+
+
 void bind_online_bivariate(pybind11::module_& m) {
     pybind11::class_<OnlineBivariate>(m, "OnlineBivariate")
         .def(pybind11::init<size_t>())
@@ -105,4 +136,9 @@ void bind_online_bivariate(pybind11::module_& m) {
         .def("welch_t_against", &OnlineBivariate::welch_t_against)
         //.def("clear", &OnlineBivariate::clear)
         .def("get_cov", &OnlineBivariate::get_cov);
+
+    pybind11::class_<OnlineBivariateTVLA>(m, "OnlineBivariateTVLA")
+        .def(pybind11::init<size_t>())
+        .def("update", &OnlineBivariateTVLA::update)
+        .def("get_tvalue", &OnlineBivariateTVLA::get_tvalue);
 }

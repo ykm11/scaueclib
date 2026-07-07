@@ -1,4 +1,5 @@
-from scaueclib import OnlineBivariate
+from scaueclib import OnlineBivariateTVLA
+
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
@@ -11,8 +12,7 @@ dim = 200
 target_1 = 12
 target_2 = 21
 
-g0 = OnlineBivariate(dim)
-g1 = OnlineBivariate(dim)
+tvla = OnlineBivariateTVLA(dim)
 
 z = np.random.normal(0.0, 1.0, size=N).astype(np.float32)
 data = np.random.normal(0.0, 1.0, size=(N, dim)).astype(np.float32)
@@ -23,12 +23,10 @@ data[mask, target_1] += 3.0 * z[mask]
 data[mask, target_2] -= 3.0 * z[mask]
 
 for i in range(N):
-    if coins[i] == 0:
-        g0.update(data[i])
-    else:
-        g1.update(data[i])
+    tvla.update(data[i], coins[i])
 
-t = g0.welch_t_against(g1)
+t = tvla.get_tvalue()
+
 
 plt.imshow(t)
 plt.colorbar()

@@ -29,4 +29,22 @@ private:
 
 };
 
+
+class OnlineBivariateTVLA {
+public:
+    OnlineBivariateTVLA(size_t dim);
+
+    void update(pybind11::array_t<float, 
+            pybind11::array::c_style | pybind11::array::forcecast> new_data,
+            int coin);
+
+    pybind11::array_t<double> get_tvalue() const;
+    //void clear();
+
+private:
+    OnlineBivariate g0_, g1_;
+    size_t dim_;
+
+};
+
 void bind_online_bivariate(pybind11::module_& m);
