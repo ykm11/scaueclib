@@ -15,6 +15,7 @@ $ cp *.so /path/to/your_working_dir
 - OnlineCPA (computes Pearson's correlation coefficients at each point)
 - OnlineTVLA (first-order t-test)
 - OnlineBivariateTVLA
+- OnlineWasserstain (quantitative assessment with the Wasserstein distance)
 
 
 ### Usage
@@ -42,6 +43,15 @@ for i in range(N):
 onlineVec.get_tvalue()
 ```
 
+For a leakage assessment with the Wasserstein distance.
+```Python
+from scaueclib import OnlineWasserstain
+onlineVec = OnlineWasserstein(dim, adc_bit)
+
+for i in range(N):
+  onlineVec.update(trace[i], coin[i]) # trace = np.array, coin = 0 or 1
+onlineVec.get_distance()
+```
 
 
 #### Contact  
