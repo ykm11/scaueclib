@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import wasserstein_distance
 from scaueclib import OnlineWasserstein
 
 np.random.seed(0)
@@ -27,6 +28,12 @@ for i in range(N // 2):
 
 wd = wd_vec.get_distance()
 
-plt.plot(wd)
-plt.show()
+sci_wd = np.zeros(dim)
+for i in range(dim):
+    sci_wd[i] = wasserstein_distance(x0[:,i], x1[:,i])
+
+print(wd[:10])
+print(sci_wd[:10])
+#plt.plot(wd)
+#plt.show()
 
